@@ -1,10 +1,24 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useContext } from 'react'
+import { Link, NavLink } from 'react-router-dom'
+import { AuthContext } from '../../Providers/AuthProvider'
+import {  FaShoppingCart } from "react-icons/fa";
+import useCart from '../../hooks/useCart';
 
 const Navbar = () => {
+  const {user,logOut}=useContext(AuthContext)
+  const[cart]=useCart()
     const navOpions=<>
    <li><NavLink to='/'>HOME</NavLink></li>  
     <li> <NavLink to='/menu'>MENU</NavLink> </li>
+    <li> <NavLink to='/order/salad'>Order</NavLink> </li>
+    <li> <NavLink to='/login'>Login</NavLink> </li>
+    <li>
+      <Link to="/dashboard/cart">
+      <button className="btn">
+  <FaShoppingCart></FaShoppingCart>
+  <div className="badge  badge-secondary">+{cart.length}</div>
+</button></Link>
+    </li>
     </>
   return (
     <div className="navbar fixed z-10 text-white max-w-screen-xl bg-black bg-opacity-30 ">
@@ -38,7 +52,14 @@ const Navbar = () => {
       </ul>
     </div>
     <div className="navbar-end">
-      <p>OKAY</p>
+    {
+      user?<> 
+      {/* <p>{user?.displayName}</p> */}
+
+       <button onClick={logOut} >LogOut</button> </> :<>
+      <Link to='/login'>Login</Link>
+      </>
+    }
     </div>
   </div>
   )
